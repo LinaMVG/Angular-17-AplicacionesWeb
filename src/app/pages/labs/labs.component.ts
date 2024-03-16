@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import {  FormControl, ReactiveFormsModule} from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-labs',
@@ -30,21 +30,24 @@ export class LabsComponent {
 
   person = signal({
     name: 'Lina',
-    age: 2,
+    age: 24,
     avatar: 'https://w3schools.com/howto/img_avatar.png',
   });
 
   colorCtrl = new FormControl();
-  widthCtrl = new FormControl(50,{
-    nonNullable:true
+  widthCtrl = new FormControl(50, {
+    nonNullable: true,
   });
 
+  nameCtrl = new FormControl('Lina M', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.minLength(3)],
+  });
 
-  constructor(){
-    this.colorCtrl.valueChanges.subscribe(value =>{
+  constructor() {
+    this.colorCtrl.valueChanges.subscribe((value) => {
       console.log(value);
-
-    })
+    });
   }
 
   clickHandler() {
@@ -63,14 +66,14 @@ export class LabsComponent {
     console.log(input.value);
   }
 
-  changeName(event : Event){
-    const input = event.target as HTMLInputElement
-    const newValue = input.value
-    this.person.update(prevState => {
-      return{
+  changeName(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const newValue = input.value;
+    this.person.update((prevState) => {
+      return {
         ...prevState,
-        name : newValue
-      }
-    })
+        name: newValue,
+      };
+    });
   }
 }
