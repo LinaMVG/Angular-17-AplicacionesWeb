@@ -1,0 +1,10 @@
+.container
+{
+  padding: 3rem;
+}
+
+.box{
+  height: 10px;
+  display: block;
+  background-color: red;
+}
