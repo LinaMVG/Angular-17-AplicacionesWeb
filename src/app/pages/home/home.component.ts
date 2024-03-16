@@ -1,5 +1,12 @@
-import { Component, Injector, computed, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  Injector,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
+
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Task } from './../../models/task.model';
@@ -7,7 +14,7 @@ import { Task } from './../../models/task.model';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -25,18 +32,18 @@ export class HomeComponent {
     // },
   ]);
 
-  filter = signal<'all' | 'pending' | 'completed' >('all');
-  taskByFilter = computed(()=> {
-    const filter = this.filter()
-    const tasks = this.tasks()
-    if(filter === 'pending'){
-      return tasks.filter(task => !task.completed)
+  filter = signal<'all' | 'pending' | 'completed'>('all');
+  taskByFilter = computed(() => {
+    const filter = this.filter();
+    const tasks = this.tasks();
+    if (filter === 'pending') {
+      return tasks.filter((task) => !task.completed);
     }
-    if(filter === 'completed'){
-      return tasks.filter(task => task.completed)
+    if (filter === 'completed') {
+      return tasks.filter((task) => task.completed);
     }
-    return tasks
-  })
+    return tasks;
+  });
 
   //Crea instancias
   newTaskCtrl = new FormControl('', {
@@ -46,19 +53,19 @@ export class HomeComponent {
 
   /*injector = inject(Injector)*/
 
-  constructor(){
-    effect(() =>{
-      const tasks = this.tasks()
-      localStorage.setItem('tasks', JSON.stringify(tasks))
+  constructor() {
+    effect(() => {
+      const tasks = this.tasks();
+      localStorage.setItem('tasks', JSON.stringify(tasks));
       console.log('run effect' + tasks);
-    })
+    });
   }
 
-  ngOnInit(){
-    const storage =localStorage.getItem('tasks')
-    if(storage){
-      const tasks = JSON.parse(storage)
-      this.tasks.set(tasks)
+  ngOnInit() {
+    const storage = localStorage.getItem('tasks');
+    if (storage) {
+      const tasks = JSON.parse(storage);
+      this.tasks.set(tasks);
     }
     //this.trackTasks()
   }
@@ -70,7 +77,6 @@ export class HomeComponent {
   //     console.log('run effect' + tasks);
   //   }, {injector: this.injector})
   // }
-
 
   //Metodos que sirven para ejecutar una acción en la aplicación
 
@@ -133,7 +139,7 @@ export class HomeComponent {
         }
         return {
           ...task,
-          editing:false
+          editing: false,
         };
       });
     });
@@ -155,9 +161,7 @@ export class HomeComponent {
     });
   }
 
-  changeFilter(filter : 'all' | 'pending' | 'completed'){
+  changeFilter(filter: 'all' | 'pending' | 'completed') {
     this.filter.set(filter);
   }
 }
-
-
